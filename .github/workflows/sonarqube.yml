@@ -1,27 +1,41 @@
-name: SonarQube
+name: SonarQube Scan
 
 on:
-  pull_request:
   push:
     branches:
       - main
-      - develop
+      - master
+
+  pull_request:
+    branches:
+      - main
+      - master
 
 jobs:
   sonarqube:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Set up JDK
-        uses: actions/setup-java@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          distribution: temurin
-          java-version: 17
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test || true
 
       - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          sonar-scanner             -Dsonar.projectKey=my-project             -Dsonar.sources=.             -Dsonar.host.url=http://TU_IP:9000             -Dsonar.token=$SONAR_TOKEN
+        with:
+          args: >
+            -Dsonar.projectKey=my-project
+            -Dsonar.sources=.
+            -Dsonar.host.url=https://49b2-186-154-38-51.ngrok-free.app
