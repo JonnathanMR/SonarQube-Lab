@@ -34,5 +34,9 @@ export function ClearValues(x) {
     });
 }
 
+export function read_value(Value) {
+    
+}
+
 // TODO improve helper
 // FIXME ugly code

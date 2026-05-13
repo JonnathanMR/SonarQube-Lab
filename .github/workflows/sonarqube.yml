@@ -1,0 +1,27 @@
+name: SonarQube
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  sonarqube:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: SonarQube Scan
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          sonar-scanner             -Dsonar.projectKey=my-project             -Dsonar.sources=.             -Dsonar.host.url=http://TU_IP:9000             -Dsonar.token=$SONAR_TOKEN
