@@ -34,5 +34,7 @@ export function ClearValues(x) {
     });
 }
 
+export function empty(_x) {}
+
 // TODO improve helper
 // FIXME ugly code
